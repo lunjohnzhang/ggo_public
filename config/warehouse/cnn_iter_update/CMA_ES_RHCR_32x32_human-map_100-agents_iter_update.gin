@@ -1,0 +1,50 @@
+include "config/warehouse/base.gin"
+
+
+Manager.initial_mean = 5
+sigma0 = 5
+optimize_wait = True
+
+WarehouseManager.agent_num = 100
+WarehouseManager.n_evals = 5
+
+WarehouseManager.lvl_width = 36
+WarehouseManager.lvl_height = 33
+WarehouseManager.bound_handle = "normalization"
+WarehouseManager.iterative_update = True
+WarehouseManager.update_model_n_params = 4271
+
+## EvolutionStrategyEmitter ##
+Manager.emitter_types = [(@EvolutionStrategyEmitter, 5)]
+
+EvolutionStrategyEmitter.sigma0 = %sigma0
+EvolutionStrategyEmitter.es = @CMAEvolutionStrategy
+EvolutionStrategyEmitter.ranker = "obj"
+EvolutionStrategyEmitter.selection_rule = "mu"
+EvolutionStrategyEmitter.restart_rule = "basic"
+EvolutionStrategyEmitter.batch_size = 20
+
+experiment.name = "Warehouse Highway 33x36 CMA-ES Human Map 100 agents CNN PIU"
+Manager.is_em = False
+Manager.is_cma_mae = True # This CMA-ES is CMA-MAE with learning rate 0
+Manager.bounds = None # Emitter does not have bounds for PIU
+
+WarehouseConfig.hamming_only = True
+WarehouseConfig.measure_names = ["tile_usage_std", "edge_pair_usage_std"]
+
+WarehouseConfig.iter_update_model_type = @WarehouseCNNUpdateModel
+WarehouseConfig.iter_update_max_iter = 5
+
+# ## GridArchive ##
+GridArchive.dims = [25, 25]
+GridArchive.ranges = [[0.00075, 0.001], [0, 120]]
+GridArchive.learning_rate = 0
+GridArchive.threshold_min = 0
+
+downsample/GridArchive.dims = [20, 20]
+downsample/GridArchive.ranges = [[0.00075, 0.001], [0, 120]]
+
+# Update model
+WarehouseCNNUpdateModel.nc = 10
+WarehouseCNNUpdateModel.kernel_size = 3
+WarehouseCNNUpdateModel.n_hid_chan = 32

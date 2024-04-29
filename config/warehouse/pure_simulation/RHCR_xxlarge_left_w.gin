@@ -1,0 +1,4 @@
+include "config/warehouse/pure_simulation/RHCR_xxlarge.gin"
+
+WarehouseConfig.left_w_weight = 5.0
+WarehouseConfig.right_w_weight = 1.0

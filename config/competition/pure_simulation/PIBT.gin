@@ -1,0 +1,7 @@
+CompetitionConfig.aggregation_type = 'mean'
+CompetitionConfig.bounds = %bounds
+CompetitionConfig.iter_update_max_iter = 5
+CompetitionConfig.iter_update_model_type = @CompetitionCNNUpdateModel
+CompetitionConfig.measure_names = ['wait_cost_std', 'edge_pair_usage_std']
+CompetitionConfig.obj_type = 'throughput'
+CompetitionConfig.simulation_time = 1000

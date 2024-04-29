@@ -1,0 +1,7 @@
+include "config/competition/CMA_ES_PIBT_warehouse-33x36_400-agents.gin"
+
+Manager.max_evals = 100
+Manager.inner_itrs = 1000
+
+EvolutionStrategyEmitter.batch_size = 10
+Manager.emitter_types = [(@EvolutionStrategyEmitter, 5)]

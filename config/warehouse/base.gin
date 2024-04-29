@@ -1,0 +1,127 @@
+# Base Configuration.
+
+## Common ##
+sigma0 = 5
+measure_dim = 2
+num_objects = 2
+min_n_shelf = 20
+max_n_shelf = 20
+# sol_size = 108
+bi_directed = True
+bounds = (0.1, 100)
+optimize_wait = True
+
+## Manager ##
+
+# Algorithm.
+Manager.env_manager_class = @WarehouseManager
+Manager.is_em = False
+Manager.is_cma_mae = False
+Manager.max_evals = 10000
+Manager.initial_sols = 100
+Manager.inner_itrs = 10_000
+Manager.archive_type = @GridArchive
+# Manager.sol_size = %sol_size
+Manager.emitter_types = [(@MapElitesBaselineWarehouseEmitter, 5)]
+# Logging.
+Manager.archive_save_freq = -1
+Manager.reload_save_freq = 1
+Manager.plot_metrics_freq = 1
+Manager.bounds = %bounds
+Manager.initial_mean = 5
+
+## Warehouse Manager ##
+
+WarehouseManager.n_evals = 1
+WarehouseManager.lvl_width = 12
+WarehouseManager.lvl_height = 9
+WarehouseManager.w_mode = True
+WarehouseManager.n_endpt = 2
+WarehouseManager.agent_num = 10
+WarehouseManager.base_map_path = "maps/warehouse/human/kiva_large_w_mode.json"
+WarehouseManager.bi_directed = %bi_directed
+WarehouseManager.optimize_wait = %optimize_wait
+WarehouseManager.bound_handle = "normalization"
+
+## MapElitesBaselineWarehouseEmitter ##
+
+MapElitesBaselineWarehouseEmitter.batch_size = 10
+MapElitesBaselineWarehouseEmitter.initial_population = 20
+MapElitesBaselineWarehouseEmitter.mutation_k = 10
+MapElitesBaselineWarehouseEmitter.geometric_k = True
+MapElitesBaselineWarehouseEmitter.num_objects = %num_objects
+MapElitesBaselineWarehouseEmitter.min_n_shelf = %min_n_shelf
+MapElitesBaselineWarehouseEmitter.max_n_shelf = %max_n_shelf
+
+## EmulationModel ##
+
+WarehouseEmulationModel.network_type = @WarehouseConvolutional
+WarehouseEmulationModel.prediction_type = "regression"
+WarehouseEmulationModel.train_epochs = 20
+WarehouseEmulationModel.train_batch_size = 64
+WarehouseEmulationModel.train_sample_size = 20000
+
+WarehouseConvolutional.i_size = 32
+WarehouseConvolutional.nc = 4 # plus 2 for endpoint and robot
+                              # start loc or workstation
+WarehouseConvolutional.ndf = 64
+WarehouseConvolutional.n_extra_layers = 0
+WarehouseConvolutional.head_dimensions = [1, 1, 1]
+
+
+# ## GridArchive ##
+# GridArchive.solution_dim = %sol_size
+GridArchive.dims = [15, 100]
+GridArchive.ranges = [[5, 20], [9, 14]]
+
+# downsample/GridArchive.solution_dim = %sol_size
+downsample/GridArchive.dims = [15, 25]
+downsample/GridArchive.ranges = [[5, 20], [9, 14]]
+
+# ## WarehouseConfig ##
+WarehouseConfig.scenario="KIVA"             # scenario (SORTING, KIVA, ONLINE, BEE)
+WarehouseConfig.task=""                     # input task file
+WarehouseConfig.cutoffTime=60               # cutoff time (seconds)
+WarehouseConfig.screen=0                    # screen option (0: none; 1:
+                                            # results; 2:all)
+WarehouseConfig.solver="PBS"                # solver (LRA, PBS, WHCA, ECBS)
+WarehouseConfig.id=False                    # independence detection
+WarehouseConfig.single_agent_solver="SIPP"  # single-agent solver (ASTAR, SIPP)
+WarehouseConfig.lazyP=False                 # use lazy priority
+WarehouseConfig.simulation_time=1000        # run simulation
+WarehouseConfig.simulation_window=5         # (h) call the planner every
+                                            # simulation_window timesteps
+WarehouseConfig.travel_time_window=0        # consider the traffic jams within
+                                            # the given window
+WarehouseConfig.planning_window=10          # (w) the planner outputs plans with
+                                            # first planning_window timesteps
+                                            # collision-free
+WarehouseConfig.potential_function="NONE"   # potential function (NONE, SOC, IC)
+WarehouseConfig.potential_threshold=0       # potential threshold
+WarehouseConfig.rotation=False              # consider rotation
+WarehouseConfig.robust=0                    # k-robust (for now, only work for
+                                            # PBS)
+WarehouseConfig.CAT=False                   # use conflict-avoidance table
+WarehouseConfig.hold_endpoints=False        # Hold endpoints from Ma et al,
+                                            # AAMAS 2017
+WarehouseConfig.dummy_paths=False           # Find dummy paths from Liu et al,
+                                            # AAMAS 2019
+WarehouseConfig.prioritize_start=True       # Prioritize waiting at start
+                                            # locations
+WarehouseConfig.suboptimal_bound=1          # Suboptimal bound for ECBS
+WarehouseConfig.log=False                   # save the search trees (and the
+                                            # priority trees)
+WarehouseConfig.aggregation_type = "mean"
+WarehouseConfig.measure_names = ["n_shelf_components", "all_task_len_mean"]
+WarehouseConfig.test=False
+WarehouseConfig.use_warm_up=True
+WarehouseConfig.hamming_only=False
+WarehouseConfig.save_result=False
+WarehouseConfig.save_solver=False
+WarehouseConfig.save_heuristics_table=False
+WarehouseConfig.stop_at_traffic_jam=True
+WarehouseConfig.obj_type = "throughput"
+WarehouseConfig.left_w_weight = 1.0
+WarehouseConfig.right_w_weight = 1.0
+WarehouseConfig.bounds = %bounds
+WarehouseConfig.optimize_wait = %optimize_wait

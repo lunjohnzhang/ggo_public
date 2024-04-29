@@ -1,0 +1,38 @@
+include "config/warehouse/base.gin"
+
+Manager.initial_mean = 5
+sigma0 = 5
+optimize_wait = False
+
+WarehouseManager.agent_num = 220
+WarehouseManager.n_evals = 5
+
+WarehouseManager.lvl_width = 36
+WarehouseManager.lvl_height = 33
+WarehouseManager.bound_handle = "projection"
+
+## EvolutionStrategyEmitter ##
+Manager.emitter_types = [(@EvolutionStrategyEmitter, 5)]
+
+EvolutionStrategyEmitter.sigma0 = %sigma0
+EvolutionStrategyEmitter.es = @CMAEvolutionStrategy
+EvolutionStrategyEmitter.ranker = "obj"
+EvolutionStrategyEmitter.selection_rule = "mu"
+EvolutionStrategyEmitter.restart_rule = "basic"
+EvolutionStrategyEmitter.batch_size = 20
+
+experiment.name = "Warehouse Highway 33x36 CMA-ES Human Map 220 agents projection"
+Manager.is_em = False
+Manager.is_cma_mae = True # This CMA-ES is CMA-MAE with learning rate 0
+
+WarehouseConfig.hamming_only = True
+WarehouseConfig.measure_names = ["tile_usage_std", "edge_pair_usage_std"]
+
+# ## GridArchive ##
+GridArchive.dims = [25, 25]
+GridArchive.ranges = [[0.00075, 0.001], [0, 120]]
+GridArchive.learning_rate = 0
+GridArchive.threshold_min = 0
+
+downsample/GridArchive.dims = [20, 20]
+downsample/GridArchive.ranges = [[0.00075, 0.001], [0, 120]]

@@ -1,0 +1,7 @@
+include "config/competition/cnn_iter_update/CMA_ES_PIBT_32x32_random-map_400-agents_iter_update.gin"
+
+Manager.max_evals = 100
+Manager.inner_itrs = 1000
+
+EvolutionStrategyEmitter.batch_size = 10
+Manager.emitter_types = [(@EvolutionStrategyEmitter, 5)]

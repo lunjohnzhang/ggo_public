@@ -1,0 +1,4 @@
+include "config/warehouse/pure_simulation/RHCR.gin"
+
+WarehouseConfig.save_result=True
+WarehouseConfig.simulation_time=1000

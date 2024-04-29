@@ -1,0 +1,48 @@
+include "config/competition/base.gin"
+
+Manager.initial_mean = 5
+sigma0 = 5
+base_map_path = "maps/competition/human/pibt_room-64-64-8.json"
+
+CompetitionManager.lvl_width = 64
+CompetitionManager.lvl_height = 64
+CompetitionManager.bound_handle = "normalization"
+CompetitionManager.iterative_update = True
+CompetitionManager.update_model_n_params = 4271
+
+CompetitionConfig.num_agents=1500
+CompetitionConfig.simulation_time = 1000
+CompetitionConfig.iter_update_model_type = @CompetitionCNNUpdateModel
+
+## EvolutionStrategyEmitter ##
+Manager.emitter_types = [(@EvolutionStrategyEmitter, 5)]
+
+EvolutionStrategyEmitter.sigma0 = %sigma0
+EvolutionStrategyEmitter.es = @CMAEvolutionStrategy
+EvolutionStrategyEmitter.ranker = "obj"
+EvolutionStrategyEmitter.selection_rule = "mu"
+EvolutionStrategyEmitter.restart_rule = "basic"
+EvolutionStrategyEmitter.batch_size = 20
+
+experiment.name = "Competition Highway 64x64 CMA-ES Room Map 1500 agents CNN Iter Update"
+Manager.is_em = False
+Manager.is_cma_mae = True # This CMA-ES is CMA-MAE with learning rate 0
+Manager.bounds = None
+Manager.max_evals = 10000
+
+CompetitionConfig.measure_names = ["wait_cost_std", "edge_pair_usage_std"]
+CompetitionConfig.iter_update_max_iter = 5
+CompetitionConfig.iter_update_mdl_kwargs = {
+    "nc": 10,
+    "kernel_size": 3,
+    "n_hid_chan": 32,
+}
+
+# ## GridArchive ##
+GridArchive.dims = [25, 25]
+GridArchive.ranges = [[10, 20], [0, 50]]
+GridArchive.learning_rate = 0
+GridArchive.threshold_min = 0
+
+downsample/GridArchive.dims = [20, 20]
+downsample/GridArchive.ranges = [[10, 20], [0, 50]]

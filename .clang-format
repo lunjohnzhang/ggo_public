@@ -1,0 +1,15 @@
+{
+  BasedOnStyle: Google,
+  UseTab: Never,
+  IndentWidth: 4,
+  TabWidth: 4,
+  DerivePointerAlignment: false,
+  PointerAlignment: Left,
+  BreakBeforeBraces: Allman,
+  AllowShortIfStatementsOnASingleLine: false,
+  IndentCaseLabels: false,
+  ColumnLimit: 80,
+  AccessModifierOffset: -4,
+  NamespaceIndentation: All,
+  FixNamespaceComments: false,
+}

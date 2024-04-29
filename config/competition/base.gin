@@ -1,0 +1,85 @@
+# Base Configuration.
+
+## Common ##
+sigma0 = 5
+# measure_dim = 2
+# num_objects = 2
+# min_n_shelf = 20
+# max_n_shelf = 20
+# sol_size = 108
+bi_directed = True
+bounds = (0.1, 100)
+base_map_path = "maps/competition/human/pibt_random_unweight_32x32.json"
+
+## Manager ##
+
+# Algorithm.
+Manager.env_manager_class = @CompetitionManager
+Manager.is_em = False
+Manager.is_cma_mae = False
+Manager.max_evals = 10000
+Manager.initial_sols = 100
+Manager.inner_itrs = 10_000
+Manager.archive_type = @GridArchive
+# Manager.sol_size = %sol_size
+Manager.emitter_types = [(@EvolutionStrategyEmitter, 5)]
+# Logging.
+Manager.archive_save_freq = -1
+Manager.reload_save_freq = 1
+Manager.plot_metrics_freq = 1
+Manager.bounds = %bounds
+Manager.initial_mean = 5
+
+## Competition Manager ##
+
+CompetitionManager.n_evals = 5
+CompetitionManager.lvl_width = 12
+CompetitionManager.lvl_height = 9
+CompetitionManager.bi_directed = %bi_directed
+CompetitionManager.optimize_wait = True
+CompetitionManager.bound_handle = "normalization"
+CompetitionManager.base_map_path = %base_map_path
+
+## EvolutionStrategyEmitter ##
+
+EvolutionStrategyEmitter.sigma0 = %sigma0
+EvolutionStrategyEmitter.es = @CMAEvolutionStrategy
+EvolutionStrategyEmitter.ranker = "obj"
+EvolutionStrategyEmitter.selection_rule = "mu"
+EvolutionStrategyEmitter.restart_rule = "basic"
+EvolutionStrategyEmitter.batch_size = 20
+
+## EmulationModel ##
+
+CompetitionEmulationModel.network_type = @CompetitionConvolutional
+CompetitionEmulationModel.prediction_type = "regression"
+CompetitionEmulationModel.train_epochs = 20
+CompetitionEmulationModel.train_batch_size = 64
+CompetitionEmulationModel.train_sample_size = 20000
+
+CompetitionConvolutional.i_size = 32
+CompetitionConvolutional.nc = 4 # plus 2 for endpoint and robot
+                              # start loc or workstation
+CompetitionConvolutional.ndf = 64
+CompetitionConvolutional.n_extra_layers = 0
+CompetitionConvolutional.head_dimensions = [1, 1, 1]
+
+
+# ## GridArchive ##
+# GridArchive.solution_dim = %sol_size
+GridArchive.dims = [15, 100]
+GridArchive.ranges = [[5, 20], [9, 14]]
+
+# downsample/GridArchive.solution_dim = %sol_size
+downsample/GridArchive.dims = [15, 25]
+downsample/GridArchive.ranges = [[5, 20], [9, 14]]
+
+# ## CompetitionConfig ##
+CompetitionConfig.map_path = %base_map_path
+CompetitionConfig.num_agents=600
+CompetitionConfig.simulation_time=1000        # run simulation
+CompetitionConfig.aggregation_type = "mean"
+CompetitionConfig.obj_type = "throughput"
+CompetitionConfig.bounds = %bounds
+CompetitionConfig.iter_update_model_type = @CompetitionCNNUpdateModel
+CompetitionConfig.iter_update_max_iter = 5

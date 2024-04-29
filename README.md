@@ -1,6 +1,6 @@
 # Guidance Graph Optimization for Lifelong Multi-Agent Path Finding
 
-This repository is the official implementation of **[Guidance Graph Optimization for Lifelong Multi-Agent Path Finding]()**. The repository builds on top of the repositories of [Multi-Robot Coordination and Layout Design for Automated Warehousing](https://github.com/lunjohnzhang/warehouse_env_gen_public)
+This repository is the official implementation of **[Guidance Graph Optimization for Lifelong Multi-Agent Path Finding](https://arxiv.org/abs/2402.01446)**, accepted to IJCAI 2024. The repository builds on top of the repository of [Multi-Robot Coordination and Layout Design for Automated Warehousing](https://github.com/lunjohnzhang/warehouse_env_gen_public)
 
 **If you are just looking for the optimized guidance graphs, please refer to the [Optimized Guidance Graphs](#optimized-guidance-graphs) section below or go to the [project website](https://yulunzhang.net/publication/zhang2024ggo/).**
 
